@@ -1,0 +1,39 @@
+package:
+  name: bioformats2raw
+  version: 1.0.0  # Update this to the correct version
+
+source:
+  git_url: https://github.com/yourusername/bioformats2raw.git
+  git_rev: main  # or the specific commit/branch/tag
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+    - gradle >=6.9
+    - openjdk >=8
+    - blosc
+  host:
+    - python
+    - pip
+  run:
+    - python
+    - openjdk >=8
+    - libblosc1
+
+test:
+  commands:
+    - bioformats2raw --help
+
+build:
+  script: "python -m pip install . -vv"
+  noarch: generic
+  entry_points:
+    - bioformats2raw = bioformats2raw.cli:main
+
+about:
+  home: https://github.com/yourusername/bioformats2raw
+  license: GPL
+  summary: 'bioformats2raw is a tool for converting various image formats to OME-TIFF.'
+

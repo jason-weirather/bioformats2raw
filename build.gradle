@@ -45,6 +45,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation 'org.blosc:jni-blosc'
     implementation 'net.java.dev.jna:jna:5.10.0'
     implementation 'ome:formats-gpl:6.12.0'
     implementation 'info.picocli:picocli:4.6.1'
