@@ -2,8 +2,11 @@ name: bioformats2raw
 channels:
   - defaults
 dependencies:
-  - gradle >=6.9
+  - python >=3.9
+  - numpy
+  - pandas
+  - gradle >=7.4
   - openjdk >=8
-  - libblosc1
-  - bioformats2raw  # This should match the package name specified in the conda recipe
+  #- libblosc1
+  #- bioformats2raw  # This should match the package name specified in the conda recipe
 

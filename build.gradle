@@ -3,7 +3,34 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'checkstyle'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
+
+shadowJar {
+    archiveBaseName.set('bioformats2raw')
+    archiveClassifier.set('')
+    archiveVersion.set(project.version)
+    manifest {
+        attributes 'Main-Class': 'com.glencoesoftware.bioformats2raw.Converter'
+    }
+}
+
+application {
+    // Use the Shadow JAR in the distribution
+    applicationDistribution.from shadowJar
+
+}
+
+task createBioformats2rawScript(type: Copy) {
+    dependsOn shadowJar
+    from 'scripts/bioformats2raw_template.sh'
+    into 'build/scripts'
+    rename 'bioformats2raw_template.sh', 'bioformats2raw'
+    doLast {
+        new File('build/scripts/bioformats2raw').setExecutable(true)
+    }
+}
+
 
 group = 'com.glencoesoftware'
 version = '0.6.1'
@@ -45,7 +72,6 @@ configurations.all {
 }
 
 dependencies {
-    implementation 'org.blosc:jni-blosc'
     implementation 'net.java.dev.jna:jna:5.10.0'
     implementation 'ome:formats-gpl:6.12.0'
     implementation 'info.picocli:picocli:4.6.1'
@@ -108,6 +134,7 @@ startScripts {
   // likely due to https://issues.gradle.org/browse/GRADLE-2991
   // see also discussion in https://github.com/glencoesoftware/bioformats2raw/pull/169
   classpath += files('src/dist/lib/config/')
+
 }
 
 publishing {
@@ -130,4 +157,13 @@ publishing {
 
 checkstyle {
     toolVersion = "8.26"
+}
+
+shadowJar {
+    archiveBaseName.set('bioformats2raw')
+    archiveClassifier.set('')
+    archiveVersion.set(project.version)
+    manifest {
+        attributes 'Main-Class': 'com.glencoesoftware.bioformats2raw.Converter'
+    }
 }
