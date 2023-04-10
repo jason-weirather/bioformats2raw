@@ -5,8 +5,6 @@ dependencies:
   - python >=3.9
   - numpy
   - pandas
-  - gradle >=7.4
+  - gradle =7.4.2
   - openjdk >=8
-  #- libblosc1
-  #- bioformats2raw  # This should match the package name specified in the conda recipe
 

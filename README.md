@@ -1,4 +1,171 @@
-[![Actions Status](https://github.com/glencoesoftware/bioformats2raw/workflows/Gradle/badge.svg)](https://github.com/glencoesoftware/bioformats2raw/actions)
+# Bioformats2raw Conda Fork
+
+This project is a fork of the original [bioformats2raw](https://github.com/glencoesoftware/bioformats2raw) repository, created to facilitate building and using the software within a Conda environment. The primary goal of this fork is to make the setup process easier and more accessible for users who prefer to work with Conda environments. Please note that this fork and its modifications are not affiliated with or endorsed by the original authors of the bioformats2raw project.
+
+Please note that this fork is not the main project repository, and any issues or contributions related to the original codebase should be directed to the [original authors' project](https://github.com/glencoesoftware/bioformats2raw).
+
+## About bioformats2raw
+
+Bioformats2raw is a tool for converting image file formats supported by [Bio-Formats](https://www.openmicroscopy.org/bio-formats/) to raw binary or various compressed forms suitable for further processing, analysis, or visualization.
+
+For more information, please refer to the original [README.md](https://github.com/glencoesoftware/bioformats2raw/blob/master/README.md) file in the original repository.
+
+## Usage and Installation
+
+Please follow the instructions provided in this repository for installing and using the bioformats2raw tool in a Conda environment. If you have any questions or issues related to the Conda-specific setup or usage, feel free to open an issue in this forked repository.
+
+### 1. Create your conda enviornment
+
+`$ conda env create -f environment.yml -n bioformats2raw`
+
+### 2. Build the Jar and create the script to executing using Gradle
+
+`$ ./gradlew clean shadowJar createBioformats2rawScript`
+
+### 3. Run bioformats2raw
+
+```
+$ ./build/scripts/bioformats2raw 
+Missing required parameters: '<inputPath>', '<outputLocation>'
+Usage: <main class> [-p] [--keep-memo-files] [--no-hcs] [--[no-]minmax] [--[no-]
+                    nested] [--no-ome-meta-export] [--no-root-group]
+                    [--overwrite] [--use-existing-resolutions] [--version]
+                    [--debug[=<logLevel>]] [--extra-readers[=<extraReaders>[,
+                    <extraReaders>...]]]... [--options[=<readerOptions>[,
+                    <readerOptions>...]]]... [-s[=<seriesList>[,
+                    <seriesList>...]]]...
+                    [--additional-scale-format-string-args=<additionalScaleForma
+                    tStringArgsCsv>] [-c=<compressionType>]
+                    [--dimension-order=<dimensionOrder>]
+                    [--downsample-type=<downsampling>]
+                    [--fill-value=<fillValue>] [-h=<tileHeight>]
+                    [--max_cached_tiles=<maxCachedTiles>]
+                    [--max_workers=<maxWorkers>]
+                    [--memo-directory=<memoDirectory>]
+                    [--pyramid-name=<pyramidName>] [-r=<pyramidResolutions>]
+                    [--scale-format-string=<scaleFormatString>]
+                    [--target-min-size=<minSize>] [-w=<tileWidth>]
+                    [-z=<chunkDepth>]
+                    [--compression-properties=<String=Object>]...
+                    [--output-options=<String=String>[\|<String=String>...]]...
+                    <inputPath> <outputLocation>
+      <inputPath>            file to convert
+      <outputLocation>       path to the output pyramid directory. The given
+                               path can also be a URI (containing ://) which
+                               will activate **experimental** support for
+                               Filesystems. For example, if the output path
+                               given is 's3://my-bucket/some-path' *and* you
+                               have an S3FileSystem implementation in your
+                               classpath, then all files will be written to S3.
+      --additional-scale-format-string-args=<additionalScaleFormatStringArgsCsv>
+                             Additional format string argument CSV file
+                               (without header row).  Arguments will be added
+                               to the end of the scale format string mapping
+                               the at the corresponding CSV row index.  It is
+                               expected that the CSV file contain exactly the
+                               same number of rows as the input file has series
+  -c, --compression=<compressionType>
+                             Compression type for Zarr (null, zlib, blosc;
+                               default: blosc)
+      --compression-properties=<String=Object>
+                             Properties for the chosen compression (see https:
+                               //jzarr.readthedocs.io/en/latest/tutorial.
+                               html#compressors )
+      --debug, --log-level[=<logLevel>]
+                             Change logging level; valid values are OFF, ERROR,
+                               WARN, INFO, DEBUG, TRACE and ALL. (default: WARN)
+      --dimension-order=<dimensionOrder>
+                             Override the input file dimension order in the
+                               output file [Can break compatibility with
+                               raw2ometiff] (XYZCT, XYZTC, XYCTZ, XYCZT, XYTCZ,
+                               XYTZC)
+      --downsample-type=<downsampling>
+                             Tile downsampling algorithm (SIMPLE, GAUSSIAN,
+                               AREA, LINEAR, CUBIC, LANCZOS)
+      --extra-readers[=<extraReaders>[,<extraReaders>...]]
+                             Separate set of readers to include; (default:
+                               [class com.glencoesoftware.bioformats2raw.
+                               PyramidTiffReader, class com.glencoesoftware.
+                               bioformats2raw.MiraxReader, class com.
+                               glencoesoftware.bioformats2raw.BioTekReader,
+                               class com.glencoesoftware.bioformats2raw.
+                               ND2PlateReader])
+      --fill-value=<fillValue>
+                             Default value to fill in for missing tiles (0-255)
+                               (currently .mrxs only)
+  -h, --tile_height=<tileHeight>
+                             Maximum tile height (default: 1024). This is both
+                               the chunk size (in Y) when writing Zarr and the
+                               tile size used for reading from the original
+                               data. Changing the tile size may have
+                               performance implications.
+      --keep-memo-files      Do not delete .bfmemo files created during
+                               conversion
+      --max_cached_tiles=<maxCachedTiles>
+                             Maximum number of tiles that will be cached across
+                               all workers (default: 64)
+      --max_workers=<maxWorkers>
+                             Maximum number of workers (default: 4)
+      --memo-directory=<memoDirectory>
+                             Directory used to store .bfmemo cache files
+      --no-hcs               Turn off HCS writing
+      --[no-]minmax          Whether to calculate minimum and maximum pixel
+                               values. Min/max calculation can result in slower
+                               conversions. If true, min/max values are saved
+                               as OMERO rendering metadata (true by default)
+      --[no-]nested          Whether to use '/' as the chunk path separator
+                               (true by default)
+      --no-ome-meta-export   Turn off OME metadata exporting [Will break
+                               compatibility with raw2ometiff]
+      --no-root-group        Turn off creation of root group and corresponding
+                               metadata [Will break compatibility with
+                               raw2ometiff]
+      --options[=<readerOptions>[,<readerOptions>...]]
+                             Reader-specific options, in format key=value[,
+                               key2=value2]
+      --output-options=<String=String>[\|<String=String>...]
+                             |-separated list of key-value pairs to be used as
+                               an additional argument to Filesystem
+                               implementations if used. For example,
+                               --output-options=s3fs_path_style_access=true|...
+                               might be useful for connecting to minio.
+      --overwrite            Overwrite the output directory if it exists
+      --pyramid-name=<pyramidName>
+                             Name of pyramid (default: null) [Can break
+                               compatibility with raw2ometiff]
+  -r, --resolutions=<pyramidResolutions>
+                             Number of pyramid resolutions to generate
+  -s, --series[=<seriesList>[,<seriesList>...]]
+                             Comma-separated list of series indexes to convert
+      --scale-format-string=<scaleFormatString>
+                             Format string for scale paths; the first two
+                               arguments will always be series and resolution
+                               followed by any additional arguments brought in
+                               from `--additional-scale-format-string-args`
+                               [Can break compatibility with raw2ometiff]
+                               (default: %d/%d)
+      --target-min-size=<minSize>
+                             Specifies the desired size for the largest XY
+                               dimension of the smallest resolution, when
+                               calculating the number of resolutions generate.
+                               If the target size cannot be matched exactly,
+                               the largest XY dimension of the smallest
+                               resolution should be smaller than the target
+                               size.
+      --use-existing-resolutions
+                             Use existing sub resolutions from original input
+                               format[Will break compatibility with raw2ometiff]
+  -w, --tile_width=<tileWidth>
+                             Maximum tile width (default: 1024). This is both
+                               the chunk size (in X) when writing Zarr and the
+                               tile size used for reading from the original
+                               data. Changing the tile size may have
+                               performance implications.
+  -z, --chunk_depth=<chunkDepth>
+                             Maximum chunk depth to read (default: 1)
+  -p, --progress             Print progress bars during conversion
+      --version              Print version information and exit
+```
 
 
 bioformats2raw converter

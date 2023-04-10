@@ -159,11 +159,3 @@ checkstyle {
     toolVersion = "8.26"
 }
 
-shadowJar {
-    archiveBaseName.set('bioformats2raw')
-    archiveClassifier.set('')
-    archiveVersion.set(project.version)
-    manifest {
-        attributes 'Main-Class': 'com.glencoesoftware.bioformats2raw.Converter'
-    }
-}
