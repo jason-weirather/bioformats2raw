@@ -1,39 +1,36 @@
 package:
   name: bioformats2raw
-  version: 1.0.0  # Update this to the correct version
+  version: 0.6.1
 
 source:
-  git_url: https://github.com/yourusername/bioformats2raw.git
-  git_rev: main  # or the specific commit/branch/tag
+  path: ..
+
+build:
+  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
+  script_env:
+    - GRADLE_OPTS="-Dorg.gradle.daemon=false"
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - cmake
-    - gradle >=6.9
+    - python >=3.9
+    - numpy
+    - pandas
+    - gradle =7.4.2
     - openjdk >=8
-    - blosc
-  host:
-    - python
-    - pip
+
   run:
-    - python
+    - python >=3.9
+    - numpy
+    - pandas
     - openjdk >=8
-    - libblosc1
 
 test:
   commands:
     - bioformats2raw --help
 
-build:
-  script: "python -m pip install . -vv"
-  noarch: generic
-  entry_points:
-    - bioformats2raw = bioformats2raw.cli:main
-
 about:
-  home: https://github.com/yourusername/bioformats2raw
+  home: https://github.com/jason-weirather/bioformats2raw
   license: GPL
-  summary: 'bioformats2raw is a tool for converting various image formats to OME-TIFF.'
+  summary: 'A tool to convert image file formats to an intermediate Zarr structure compatible with the OME-NGFF specification'
 
