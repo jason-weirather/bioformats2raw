@@ -24,6 +24,7 @@ requirements:
     - numpy
     - pandas
     - openjdk >=8
+    - gradle =7.4.2
 
   run:
     - c-blosc =1.10.2
