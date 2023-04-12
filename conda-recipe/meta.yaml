@@ -7,7 +7,13 @@ source:
 
 build:
   number: 0
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
+  script:
+    - ./gradlew clean shadowJar createBioformats2rawScript  # Build the project
+    - mkdir -p "${PREFIX}/bin"  # Create the bin directory in the conda environment
+    - cp "./build/bin/bioformats2raw" "${PREFIX}/bin/"  # Copy the script to the conda environment
+    - mkdir -p "${PREFIX}/libs"  # Create the libs directory in the conda environment
+    - JAR_FILE=$(find "./build/libs" -iname 'bioformats2raw*.jar' | head -n 1)
+    - cp "$JAR_FILE" "${PREFIX}/libs/"  # Copy the JAR file to the conda environment
   script_env:
     - GRADLE_OPTS="-Dorg.gradle.daemon=false"
 
